@@ -1,0 +1,10 @@
+---
+# this playbook deploys the whole application stack to the raspberry pi
+
+- name: deploy full stack
+  hosts: all
+  remote_user: pi
+  roles:
+    #- common
+    #- php
+    - ngrok

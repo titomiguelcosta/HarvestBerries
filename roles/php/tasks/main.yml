@@ -1,0 +1,55 @@
+---
+- name: Check if php is installed
+  shell: php --version
+  register: php_bin
+  ignore_errors: true
+
+- name: Add PHP repo to APT
+  become: true
+  template:
+    src: templates/10-buster.list
+    dest: /etc/apt/sources.list.d/10-buster.list
+    user: root
+    group: root
+    mode: 0644
+  when: php_bin.rc != 0
+
+- name: Configure APT to use new repo
+  become: true
+  template:
+    src: template/10-buster
+    dest: /etc/apt/preferences.d/10-buster
+    user: root
+    group: root
+    mode: 0644
+  when: php_bin.rc != 0
+
+- name: Update apt
+  become: true
+  apt: 
+    update_cache: yes
+  when: php_bin.rc != 0
+
+- name: Install PHP
+  become: true
+  apt:
+    name: "{{ packages }}"
+    default_release: buster
+  vars:
+    packages:
+      - php7.3-fpm 
+      - php7.3-curl 
+      - php7.3-gd 
+      - php7.3-intl 
+      - php7.3-mbstring 
+      - php7.3-mysql 
+      - php7.3-imap 
+      - php7.3-opcache 
+      - php7.3-sqlite3 
+      - php7.3-xml 
+      - php7.3-xmlrpc 
+      - php7.3-zip 
+      - php-apcu
+  when: php_bin.rc != 0
+
+- include_tasks: composer.yml

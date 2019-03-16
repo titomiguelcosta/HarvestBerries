@@ -1,0 +1,25 @@
+---
+- name: Check if ngrok is installed
+  shell: ngrok --version
+  ignore_errors: true
+  register: ngrok_bin
+
+- name: Download ngrok
+  get_url:
+    url: https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-arm.zip
+    dest: /tmp/ngrok-stable-linux-arm.zip
+  when: ngrok_bin.rc != 0
+
+- name: Unzip ngrok
+  become: true
+  unarchive:
+    src: /tmp/ngrok-stable-linux-arm.zip
+    dest: /usr/local/bin
+    remote_src: yes
+  when: ngrok_bin.rc != 0
+
+- name: Remove ngrok zip
+  file:
+    path: /tmp/ngrok-stable-linux-arm.zip
+    state: absent
+  when: ngrok_bin.rc != 0
