@@ -14,3 +14,20 @@
   become: true
   apt:
     autoremove: yes
+
+- name: Install common used software
+  become: true
+  apt:
+    name: {{ packages }}
+  vars:
+    packages:
+      - vim
+
+- name: Copy configuration for raspberry pi
+  become: true
+  template:
+    src: templates/config.txt
+    dest: /boot/config.txt
+    user: root
+    group: root
+    mode: 0644

@@ -1,2 +1,30 @@
 ---
-- include_tasks: pyenv.yml
+- name: Check if pyenv is installed
+  shell: pyenv --version
+  ignore_errors: true
+  register: pyenv_bin
+
+- name: Install pyenv
+  shell: curl https://pyenv.run | bash
+  when: pyenv_bin.rc != 0
+
+- name: Update bashrc
+  blockinfile:
+    path: /home/pi/.bashrc
+    content: |
+      export PATH="~/.pyenv/bin:$PATH"
+      eval "$(pyenv init -)"
+      eval "$(pyenv virtualenv-init -)"
+  when: pyenv_bin.rc != 0
+
+- name: Activate pyenv
+  shell: source ~/.bashrc
+  when: pyenv_bin.rc != 0
+  
+- name: Install python 3.6
+  shell: pyenv install 3.6.0 
+  when: pyenv_bin.rc != 0
+
+- name: Update pyenv
+  shell: pyenv update
+  when: pyenv_bin.rc == 0

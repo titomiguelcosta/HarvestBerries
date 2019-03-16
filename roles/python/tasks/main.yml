@@ -1,0 +1,10 @@
+---
+- name: Install python software
+  become: true
+  apt:
+    name: {{ packages }}
+  vars:
+    packages:
+      - vim
+
+- include_tasks: pyenv.yml
