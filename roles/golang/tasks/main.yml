@@ -1,0 +1,25 @@
+---
+- name: Check if golang is installed
+  shell: go version
+  register: go_bin
+  ignore_errors: true
+
+- name: Download golang
+  get_url:
+    url: https://dl.google.com/go/go1.12.1.linux-armv6l.tar.gz
+    dest: /tmp/go1.12.1.linux-armv6l.tar.gz
+  when: go_bin.rc != 0
+
+- name: Unarchive Golang
+  become: true
+  unarchive:
+    src: /tmp/go1.12.1.linux-armv6l.tar.gz
+    dest: /opt
+    remote_src: yes
+  when: go_bin.rc != 0
+
+- name: Add go bin to PATH
+  lineinfile:
+      path: ~/.bashrc
+      line: 'PATH=$PATH:/opt/go/bin'
+  when: go_bin.rc != 0

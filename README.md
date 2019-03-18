@@ -27,6 +27,7 @@ Host pi
 
 * Pyenv
 * PHP
+* Golang
 * ngrok
 
 ## Execute

@@ -5,6 +5,6 @@
     name: {{ packages }}
   vars:
     packages:
-      - vim
+      - 
 
 - include_tasks: pyenv.yml

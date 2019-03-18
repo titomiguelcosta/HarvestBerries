@@ -5,6 +5,9 @@
   hosts: all
   remote_user: pi
   roles:
-    #- common
-    #- php
+    - common
+    - php
+    - python
+    - golang
     - ngrok
+    
