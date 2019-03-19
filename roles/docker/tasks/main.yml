@@ -1,0 +1,15 @@
+---
+- name: Check if docker is installed
+  shell: docker version
+  register: docker_bin
+  ignore_errors: true
+
+- name: Check that 
+- name: Install docker
+  shell: curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh && rm get-docker.sh
+  when: docker_bin.rc != 0
+
+- name: Add pi to the docker group
+  become: true
+  shell: usermod -aG docker pi
+  when: docker_bin.rc != 0

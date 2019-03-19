@@ -53,3 +53,4 @@
   when: php_bin.rc != 0
 
 - include_tasks: composer.yml
+- include_tasks: packages.yml

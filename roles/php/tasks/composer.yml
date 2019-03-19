@@ -25,3 +25,9 @@
   become: true
   shell: composer selfupdate
   when: composer_bin.rc == 0
+
+- name: Add composer bin to path
+  lineinfile:
+    path: /home/pi/.bashrc
+    line: 'export PATH=$PATH:~/.config/composer/vendor/bin/'
+  when: composer_bin.rc == 0
