@@ -6,16 +6,16 @@
 
 - name: Download golang
   get_url:
-    url: https://dl.google.com/go/go1.12.1.linux-armv6l.tar.gz
-    dest: /tmp/go1.12.1.linux-armv6l.tar.gz
+    url: https://golang.org/dl/go1.15.2.linux-armv6l.tar.gz
+    dest: /tmp/go.tar.gz
   when: go_bin.rc != 0
 
 - name: Unarchive Golang
   become: true
   unarchive:
-    src: /tmp/go1.12.1.linux-armv6l.tar.gz
+    src: /tmp/go.tar.gz
     dest: /opt
-    remote_src: yes
+    remote_src: true
   when: go_bin.rc != 0
 
 - name: Add go bin to PATH

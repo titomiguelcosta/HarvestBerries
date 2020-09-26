@@ -1,0 +1,25 @@
+---
+- name: Check if node is installed
+  shell: node --version
+  ignore_errors: true
+  register: node_bin
+
+- name: Download node
+  get_url:
+    url: https://nodejs.org/dist/v12.18.4/node-v12.18.4-linux-armv7l.tar.xz
+    dest: /tmp/node.tar.xz
+  when: node_bin.rc != 0
+
+- name: Unarchive node
+  become: true
+  unarchive:
+    src: /tmp/node.tar.xz
+    dest: /opt
+    remote_src: true
+  when: node_bin.rc != 0
+
+- name: Add node bin to PATH
+  lineinfile:
+      path: ~/.bashrc
+      line: 'PATH=$PATH:/opt/node-v12.18.4-linux-armv7l/bin'
+  when: node_bin.rc != 0

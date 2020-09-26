@@ -4,14 +4,14 @@ Ansible recipes to install on a Raspberry Pi
 
 ## Dependencies
 
-Make sure you have [ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) 2.7+
+Make sure you have [ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) 2.9+
 
 ```
 $ ansible --version
-ansible 2.7.9
+ansible 2.9.10
 ```
 
-Tested for Raspbian GNU/Linux 9 (stretch).
+Tested for Raspbian GNU/Linux 10 (buster).
 
 ## Configuration
 

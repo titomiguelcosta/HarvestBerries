@@ -1,30 +1,53 @@
 ---
 - name: Check if pyenv is installed
-  shell: pyenv --version
+  shell: 
+    cmd: ls ~/.pyenv/bin/pyenv
   ignore_errors: true
   register: pyenv_bin
 
 - name: Install pyenv
-  shell: curl https://pyenv.run | bash
+  shell: 
+    cmd: curl https://pyenv.run | bash
+    warn: false
   when: pyenv_bin.rc != 0
 
 - name: Update bashrc
   blockinfile:
-    path: /home/pi/.bashrc
+    path: ~/.bashrc
     content: |
       export PATH="~/.pyenv/bin:$PATH"
       eval "$(pyenv init -)"
       eval "$(pyenv virtualenv-init -)"
   when: pyenv_bin.rc != 0
 
-- name: Activate pyenv
-  shell: source ~/.bashrc
+- name: Install dependencies
+  become: true
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - make 
+      - build-essential 
+      - libssl-dev 
+      - zlib1g-dev 
+      - libbz2-dev
+      - libreadline-dev 
+      - libsqlite3-dev 
+      - wget 
+      - curl 
+      - llvm 
+      - libncurses5-dev 
+      - libncursesw5-dev
+      - tk-dev 
+      - libffi-dev 
+      - liblzma-dev 
+      - python-openssl  
   when: pyenv_bin.rc != 0
   
-- name: Install python 3.6
-  shell: pyenv install 3.6.0 
+- name: Install python
+  shell: ~/.pyenv/bin/pyenv install 3.8.5
   when: pyenv_bin.rc != 0
 
 - name: Update pyenv
-  shell: pyenv update
+  shell: ~/.pyenv/bin/pyenv update
   when: pyenv_bin.rc == 0

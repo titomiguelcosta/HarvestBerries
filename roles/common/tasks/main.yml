@@ -18,17 +18,18 @@
 - name: Install common used software
   become: true
   apt:
-    name: {{ packages }}
+    name: "{{ packages }}"
   vars:
     packages:
       - vim
       - git
+      - xz-utils
 
 - name: Copy configuration for raspberry pi
   become: true
   template:
     src: templates/config.txt
     dest: /boot/config.txt
-    user: root
+    owner: root
     group: root
     mode: 0644
